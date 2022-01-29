@@ -7,7 +7,9 @@ import (
 func main() {
 
 	fmt.Println("hello world")
-	great("hi")
-	name("Rahat")
+
+	myBill := newBill("Rahat")
+
+	fmt.Println(myBill)
 
 }

@@ -1,9 +1,8 @@
 package main
 
-import (
-	"fmt"
-)
-
-func great(s string) {
-	fmt.Println(s)
+type Bill struct {
+	Name      string
+	foodItems map[string]float64
+	tips      float64
+	vat       float64
 }
