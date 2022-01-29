@@ -6,3 +6,9 @@ type Bill struct {
 	tips      float64
 	vat       float64
 }
+
+type Customer struct {
+	customerName  string
+	totalCustomer int16
+	tableNumber   int8
+}
