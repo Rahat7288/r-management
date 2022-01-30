@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -59,44 +60,96 @@ func getInput(prompt string, re *bufio.Reader) (string, error) {
 
 //bill creating function
 
-func createBill() (Bill, Customer) {
+func createBill() Bill {
 	reader := bufio.NewReader(os.Stdin)
 
 	CustomerName, _ := getInput("Enter Customer Name: ", reader)
 
 	//taking input for customer order
 
-	var totalNumber int16
-	var table int8
+	//var totalNumber int16
+	//var table int8
 
-	fmt.Println("Enter total number of guest please: \n")
-	fmt.Scanf("%d", &totalNumber)
+	//fmt.Println("Enter total number of guest please: \n")
+	//fmt.Scanf("%d", &totalNumber)
 
-	fmt.Println("Please Enter the table number: \n")
-	fmt.Scanf("%d", &table)
+	//fmt.Println("Please Enter the table number: \n")
+	//fmt.Scanf("%d", &table)
 
-	order := customerOrder(CustomerName, totalNumber, table)
+	//order := customerOrder(CustomerName, totalNumber, table)
 
 	billName := newBill(CustomerName)
 
 	fmt.Println("Bill has been created -", billName.Name)
 
-	return billName, order
+	return billName
 }
 
+// writhing prompt option function
+func promptOption(bill Bill) {
+	reader := bufio.NewReader(os.Stdin)
+
+	option, _ := getInput("Choose option ( A - order place, B - Add Food Items, C - Add Tips, D - Save Bill):", reader)
+
+	switch option {
+	case "A":
+		name, _ := getInput("Enter yout name please: ", reader)
+		var tNumber int8
+		var pNumber int16
+		fmt.Println("Please enter total number of guest: \n")
+		fmt.Scanf("%d", &pNumber)
+		fmt.Println("Please enter table number: \n")
+		fmt.Scanf("%d", &tNumber)
+
+		customerOrder(name, pNumber, tNumber)
+
+		promptOption(bill)
+
+	case "B":
+		name, _ := getInput("Enter Name please : ", reader)
+		price, _ := getInput("Enter price: ", reader)
+
+		p, err := strconv.ParseFloat(price, 64)
+
+		if err != nil {
+			fmt.Println("price must be a number!!")
+			promptOption(bill)
+		}
+
+		bill.addItems(name, p)
+		promptOption(bill)
+
+	case "C":
+		tip, _ := getInput("Enter tip Amount ($): ", reader)
+		t, err := strconv.ParseFloat(tip, 64)
+
+		if err != nil {
+			fmt.Println("The tip must be a number")
+			promptOption(bill)
+		}
+		bill.updateTip(t)
+
+		fmt.Println("Tip added - ", tip)
+		promptOption(bill)
+
+	case "D":
+		bill.save()
+		fmt.Println("you saved the file -", bill.Name)
+
+	default:
+		fmt.Println("that was not an option !")
+		promptOption(bill)
+
+	}
+}
 func main() {
 
 	fmt.Println("Welcome to Amar Dokan")
 
 	menu()
 
-	//myBill := newBill("Rahat")
+	mybill := createBill()
 
-	//fmt.Println("\n")
-
-	//cus := customerOrder("Rahat", 6, 20)
-
-	//fmt.Println(myBill)
-	//fmt.Println(cus)
+	promptOption(mybill)
 
 }
