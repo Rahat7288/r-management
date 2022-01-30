@@ -59,7 +59,7 @@ func getInput(prompt string, re *bufio.Reader) (string, error) {
 
 //bill creating function
 
-func createBill() Bill {
+func createBill() (Bill, Customer) {
 	reader := bufio.NewReader(os.Stdin)
 
 	CustomerName, _ := getInput("Enter Customer Name: ", reader)
@@ -81,7 +81,7 @@ func createBill() Bill {
 
 	fmt.Println("Bill has been created -", billName.Name)
 
-	return billName
+	return billName, order
 }
 
 func main() {
