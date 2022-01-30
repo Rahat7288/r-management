@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 )
 
 //function for the menu
@@ -43,6 +46,42 @@ func menu() {
 		fmt.Println(bev, ":", pri, "$")
 	}
 
+}
+
+//get input function
+
+func getInput(prompt string, re *bufio.Reader) (string, error) {
+	fmt.Println(prompt)
+	input, err := re.ReadString('\n')
+
+	return strings.TrimSpace(input), err
+}
+
+//bill creating function
+
+func createBill() Bill {
+	reader := bufio.NewReader(os.Stdin)
+
+	CustomerName, _ := getInput("Enter Customer Name: ", reader)
+
+	//taking input for customer order
+
+	var totalNumber int16
+	var table int8
+
+	fmt.Println("Enter total number of guest please: \n")
+	fmt.Scanf("%d", &totalNumber)
+
+	fmt.Println("Please Enter the table number: \n")
+	fmt.Scanf("%d", &table)
+
+	order := customerOrder(CustomerName, totalNumber, table)
+
+	billName := newBill(CustomerName)
+
+	fmt.Println("Bill has been created -", billName.Name)
+
+	return billName
 }
 
 func main() {
